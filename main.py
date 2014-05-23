@@ -19,14 +19,32 @@ import webapp2
 import config
 import urllib2
 import json
-import pprint
+#import pprint
+import datetime
+
+from google.appengine.ext import db
 
 API_ENDPOINT = 'https://api.instagram.com/v1/'
+
+
+class InstaStore(db.Model):
+    caption = db.StringProperty()
+    created = db.DateTimeProperty()
+    image_id = db.Key()
+    image_photo_url = db.LinkProperty()
+    image_photo_thumbnail_url = db.LinkProperty()
+    image_url = db.LinkProperty()
+    user_avatar_url = db.StringProperty()
+    user_id = db.StringProperty()
+    user_name = db.StringProperty()
+    user_real_name = db.StringProperty()
+    user_url = db.StringProperty()
+
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
 
-        pp = pprint.PrettyPrinter(indent=4)
+        #pp = pprint.PrettyPrinter(indent=4)
 
         url = 'https://api.instagram.com/v1/locations/' + config.location_id + '/media/recent?client_id=' + config.client_id
 
@@ -37,6 +55,28 @@ class MainHandler(webapp2.RequestHandler):
         jsn = jsn['data']
 
         for image in jsn:
+
+            try:
+                caption = image['caption']['text']
+            except TypeError:
+                caption = ''
+
+            insta_img = InstaStore(
+                caption=caption,
+                created=datetime.datetime.fromtimestamp(int(image['created_time'])),
+                image_id=image['id'],
+                image_photo_url=image['images']['standard_resolution']['url'],
+                image_photo_thumbnail_url=image['images']['thumbnail']['url'],
+                image_url=image['link'],
+                user_avatar_url=image['user']['profile_picture'],
+                user_id=image['user']['id'],
+                user_name=image['user']['username'],
+                user_real_name=image['user']['full_name'],
+                user_url='http://instagram.com/%s' % image['user']['username']
+            )
+            insta_img.put()
+
+
             self.response.write('<div style="display: block;">')
             self.response.write('<img src="' + image['images']['standard_resolution']['url'] + '"/><br />')
             self.response.write('User: ' + image['user']['full_name'] + '<br />')
@@ -48,8 +88,7 @@ class MainHandler(webapp2.RequestHandler):
 
             self.response.write(image)
             self.response.write('</div>')
-            pp.pprint(image)
-
+            #pp.pprint(image)
 
 
 app = webapp2.WSGIApplication([
