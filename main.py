@@ -1,32 +1,22 @@
 #!/usr/bin/env python
-#
-# Copyright 2007 Google Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-
-import webapp2
-import config
-import urllib2
-import json
-import pprint
-import datetime
 
 from google.appengine.ext import db
 
+import config
+import datetime
+import jinja2
+import json
+import os
+import urllib2
+import webapp2
+
+JINJA_ENVIRONMENT = jinja2.Environment(
+    loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
+    extensions=['jinja2.ext.autoescape'],
+    autoescape=True)
+
 API_ENDPOINT = 'https://api.instagram.com/v1/'
 MAX_IMPORT = 20
-
 
 class InstaStore(db.Model):
     caption = db.StringProperty(multiline=True)
@@ -44,6 +34,20 @@ class InstaStore(db.Model):
 
 class MainHandler(webapp2.RequestHandler):
 
+    def get_latest_image(self):
+        q = InstaStore.all()
+        #q.filter('id =', '709967152837643989_390861362')
+        q.order('-created')
+        result = q.get()
+        return result
+
+    def get(self):
+        image = self.get_latest_image()
+
+        self.response.write("<img src='%s' alt='' />" % image.image_photo_url)
+
+
+class ImportHandler(webapp2.RequestHandler):
     # Returns true if image exists
     def does_image_id_exist(self, image_id):
         q = InstaStore.all(keys_only=True)
@@ -83,10 +87,20 @@ class MainHandler(webapp2.RequestHandler):
         )
         insta_img.put()
 
-    def get(self):
-        flag = False
-        url = 'https://api.instagram.com/v1/locations/' + config.location_id + '/media/recent?client_id=' + config.client_id
+        print 'Added %s to the datastore' % image['link']
+
+    def get(self, filter):
+        self.response.write('Importing...')
         i = 0
+
+        if filter == 'tag':
+            url = 'https://api.instagram.com/v1/tags/' + config.location_id + '/media/recent?client_id=' + config.client_id
+        elif filter == 'user':
+            url = 'https://api.instagram.com/v1/users/' + config.user_id + '/media/recent?client_id=' + config.client_id
+        else:
+            url = 'https://api.instagram.com/v1/locations/' + config.location_id + '/media/recent?client_id=' + config.client_id
+
+        print url
 
         while i < MAX_IMPORT:
 
@@ -94,8 +108,10 @@ class MainHandler(webapp2.RequestHandler):
 
             jason = json.loads(response.read())
             images = jason['data']
+            flag = False
 
             for image in images:
+                print image['id']
 
                 if self.does_image_id_exist(image['id']) is True:
                     continue
@@ -114,7 +130,7 @@ class MainHandler(webapp2.RequestHandler):
             url = jason['pagination']['next_url']
             i += 1
 
-
 app = webapp2.WSGIApplication([
+    ('/import/(.*)', ImportHandler),
     ('/', MainHandler)
 ], debug=True)
