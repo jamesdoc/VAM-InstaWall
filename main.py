@@ -25,6 +25,7 @@ import datetime
 from google.appengine.ext import db
 
 API_ENDPOINT = 'https://api.instagram.com/v1/'
+MAX_IMPORT = 20
 
 
 class InstaStore(db.Model):
@@ -43,6 +44,23 @@ class InstaStore(db.Model):
 
 class MainHandler(webapp2.RequestHandler):
 
+    # Returns true if image exists
+    def does_image_id_exist(self, image_id):
+        q = InstaStore.all(keys_only=True)
+        q.filter('image_id =', image_id)
+        result = q.get()
+
+        if result:
+            return True
+
+        return False
+
+    # Gets the contents of a given url
+    def get_url_contents(self, url):
+        req = urllib2.Request(url)
+        return urllib2.urlopen(req)
+
+    # Adds one image into the datastore
     def insert_to_datastore(self, image):
 
         try:
@@ -63,42 +81,38 @@ class MainHandler(webapp2.RequestHandler):
             user_real_name=image['user']['full_name'],
             user_url='http://instagram.com/%s' % image['user']['username']
         )
-
         insta_img.put()
 
-    # Returns true if image exists
-    def does_image_id_exist(self, image_id):
-        q = InstaStore.all(keys_only=True)
-        q.filter('image_id =', image_id)
-        result = q.get()
-
-        if result:
-            return True
-
-        return False
-
     def get(self):
-
+        flag = False
         url = 'https://api.instagram.com/v1/locations/' + config.location_id + '/media/recent?client_id=' + config.client_id
+        i = 0
 
-        req = urllib2.Request(url)
-        res = urllib2.urlopen(req)
+        while i < MAX_IMPORT:
 
-        jsn = json.loads(res.read())
+            response = self.get_url_contents(url)
 
-        jsn = jsn['data']
+            jason = json.loads(response.read())
+            images = jason['data']
 
-        for image in jsn:
+            for image in images:
 
-            if self.does_image_id_exist(image['id']) is True:
-                continue
+                if self.does_image_id_exist(image['id']) is True:
+                    continue
 
-            self.insert_to_datastore(image)
+                self.insert_to_datastore(image)
+                flag = True
 
-            self.response.write('<hr />')
-            self.response.write('<div style="display: block;">')
-            self.response.write('<a href="' + image['link'] + '" target="_blank"><img src="' + image['images']['thumbnail']['url'] + '"/></a><br />')
-            self.response.write('</div>')
+                self.response.write('<hr />')
+                self.response.write('<div style="display: block;">')
+                self.response.write('<a href="' + image['link'] + '" target="_blank"><img src="' + image['images']['thumbnail']['url'] + '"/></a><br />')
+                self.response.write('</div>')
+
+            if flag is False:
+                i = MAX_IMPORT
+
+            url = jason['pagination']['next_url']
+            i += 1
 
 
 app = webapp2.WSGIApplication([
