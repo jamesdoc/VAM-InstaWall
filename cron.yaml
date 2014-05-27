@@ -1,0 +1,4 @@
+cron:
+- description: Import from geolocated images
+  url: /import/location
+  schedule: every 2 hours from 07:30 to 23:30
