@@ -5,10 +5,12 @@ from model import InstaStore
 import config
 import datetime
 import json
+import random
 import urllib2
 import webapp2
 
-MAX_IMPORT = 2
+API_ENDPOINT = 'https://api.instagram.com/v1/'
+MAX_IMPORT = 30
 
 class ImportHandler(webapp2.RequestHandler):
     # Returns true if image exists
@@ -57,11 +59,11 @@ class ImportHandler(webapp2.RequestHandler):
         i = 0
 
         if filter == 'tag':
-            url = 'https://api.instagram.com/v1/tags/vamuseum/media/recent?client_id=' + config.client_id
+            url = '%stags/%s/media/recent?client_id=%s' % (API_ENDPOINT, random.choice(config.tags), config.client_id)
         #elif filter == 'user':
         #   url = 'https://api.instagram.com/v1/users/' + config.user_id + '/media/recent?client_id=' + config.client_id
         else:
-            url = 'https://api.instagram.com/v1/locations/' + config.location_id + '/media/recent?client_id=' + config.client_id
+            url = '%slocations/%s/media/recent?client_id=%s' % (API_ENDPOINT, config.location_id, config.client_id)
 
         print url
 

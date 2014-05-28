@@ -1,4 +1,8 @@
 cron:
 - description: Import from geolocated images
   url: /import/location
-  schedule: every 2 hours from 07:30 to 23:30
+  schedule: every 1 hours from 07:30 to 23:30
+
+- description: Import from tags (defined in config.py)
+  url: /import/tag
+  schedule: every 30 minutes from 07:15 to 23:45
