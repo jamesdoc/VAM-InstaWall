@@ -6,3 +6,7 @@ cron:
 - description: Import from tags (defined in config.py)
   url: /import/tag
   schedule: every 30 minutes from 07:15 to 23:45
+
+- description: Import from VA instafeed
+  url: /import/user
+  schedule: every 4 hours from 09:00 to 23:00

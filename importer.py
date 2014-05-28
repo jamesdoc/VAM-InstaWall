@@ -10,7 +10,7 @@ import urllib2
 import webapp2
 
 API_ENDPOINT = 'https://api.instagram.com/v1/'
-MAX_IMPORT = 30
+MAX_IMPORT = 20
 
 class ImportHandler(webapp2.RequestHandler):
     # Returns true if image exists
@@ -60,8 +60,8 @@ class ImportHandler(webapp2.RequestHandler):
 
         if filter == 'tag':
             url = '%stags/%s/media/recent?client_id=%s' % (API_ENDPOINT, random.choice(config.tags), config.client_id)
-        #elif filter == 'user':
-        #   url = 'https://api.instagram.com/v1/users/' + config.user_id + '/media/recent?client_id=' + config.client_id
+        elif filter == 'user':
+            url = '%susers/%s/media/recent?client_id=%s' % (API_ENDPOINT, config.user_id, config.client_id)
         else:
             url = '%slocations/%s/media/recent?client_id=%s' % (API_ENDPOINT, config.location_id, config.client_id)
 
@@ -92,5 +92,9 @@ class ImportHandler(webapp2.RequestHandler):
             if flag is False:
                 i = MAX_IMPORT
 
-            url = jason['pagination']['next_url']
+            try:
+                url = jason['pagination']['next_url']
+            except KeyError():
+                i = MAX_IMPORT
+
             i += 1
