@@ -94,7 +94,7 @@ class ImportHandler(webapp2.RequestHandler):
 
             try:
                 url = jason['pagination']['next_url']
-            except KeyError():
+            except KeyError:
                 i = MAX_IMPORT
 
             i += 1
