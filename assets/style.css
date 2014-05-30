@@ -90,6 +90,22 @@ body, html {
   body img, html img {
     max-width: 100%; }
 
+.banner {
+  background-color: rgba(63, 93, 135, 0.8);
+  bottom: 0;
+  color: white;
+  height: 15%;
+  position: absolute;
+  width: 50%; }
+  .banner h1 {
+    background-image: url(images/footer.svg);
+    background-repeat: no-repeat;
+    background-size: contain;
+    float: left;
+    height: 100%;
+    margin: 0.5em;
+    text-indent: -9999px; }
+
 .main_image {
   background-color: #b5c6dd;
   border-left: 1em solid #3f5d87;

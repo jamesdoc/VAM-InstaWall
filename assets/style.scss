@@ -21,6 +21,25 @@ body, html {
     }
 }
 
+.banner{
+    background-color: rgba($instablue, 0.8);
+    bottom: 0;
+    color: white;
+    height: 15%;
+    position: absolute;
+    width: 50%;
+
+    h1{
+        background-image: url(images/footer.svg);
+        background-repeat: no-repeat;
+        background-size: contain;
+        float: left;
+        height: 100%;
+        margin: 0.5em;
+        text-indent: -9999px;
+    }
+
+}
 
 .main_image{
     background-color: lighten($instablue, 40);
