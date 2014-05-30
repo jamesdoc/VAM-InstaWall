@@ -2,7 +2,11 @@
 
 from google.appengine.ext import db
 
-class InstaStore(db.Model):
+class DictModel(db.Model):
+    def to_dict(self):
+       return dict([(p, unicode(getattr(self, p))) for p in self.properties()])
+
+class InstaStore(DictModel):
     caption = db.TextProperty()
     created = db.DateTimeProperty()
     image_id = db.StringProperty()
@@ -14,3 +18,5 @@ class InstaStore(db.Model):
     user_name = db.StringProperty()
     user_real_name = db.StringProperty()
     user_url = db.StringProperty()
+
+

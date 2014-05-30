@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 
 from model import InstaStore
+
+import api
 import importer
 import jinja2
 import os
@@ -27,6 +29,8 @@ class MainHandler(webapp2.RequestHandler):
 
 
 app = webapp2.WSGIApplication([
+    ('/api/v1/get_images.json', api.GetImages),
     ('/import/(.*)', importer.ImportHandler),
+    ('/truncate', importer.TruncateData),
     ('/', MainHandler)
 ], debug=True)

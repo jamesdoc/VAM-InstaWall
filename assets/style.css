@@ -103,8 +103,9 @@ body, html {
     background-size: contain;
     float: left;
     height: 100%;
-    margin: 0.5em;
-    text-indent: -9999px; }
+    text-indent: -9999px;
+    width: 90%;
+    margin: 2%; }
 
 .main_image {
   background-color: #b5c6dd;

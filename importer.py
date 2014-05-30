@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 from model import InstaStore
+from google.appengine.ext import db
 
 import config
 import datetime
@@ -98,3 +99,9 @@ class ImportHandler(webapp2.RequestHandler):
                 i = MAX_IMPORT
 
             i += 1
+
+class TruncateData(webapp2.RequestHandler):
+    def get(self):
+        query = InstaStore.all(keys_only=True)
+        entries =query.fetch(1000)
+        db.delete(entries)
