@@ -16,11 +16,14 @@ class MainHandler(webapp2.RequestHandler):
     def get_latest_image(self):
         q = InstaStore.all()
         q.order('-created')
-        return q.get()
+        return q.run(limit=50)
 
     def get(self):
-        image = self.get_latest_image()
-        self.response.write("<img src='%s' alt='' />" % image.image_photo_url)
+        data = {}
+        data['image'] = self.get_latest_image()
+
+        template = JINJA_ENVIRONMENT.get_template('template/base.html')
+        self.response.write(template.render(data))
 
 
 app = webapp2.WSGIApplication([

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+
+
+    {% for first in image|batch(1)|first %}
+    <div class="main_image">
+
+        <div class="polaroid">
+
+            <img src="{{ first.image_photo_url }}" />
+
+            <div class="meta">
+                <img class="user_avatar" src="{{ first.user_avatar_url }}" />
+                <p class="user_name">
+                    {% if first.user_real_name != "" %}
+                    {{ first.user_real_name }}
+                    {% else %}
+                    {{ first.user_name }}
+                    {% endif %}
+                </p>
+                <p class="created_datetime">
+                    {{ first.created.strftime('%A %d %b') }}
+                </p>
+            </div>
+
+            <div class="caption">
+                {{ first.caption }}
+            </div>
+
+        </div>
+
+    </div>
+    {% endfor %}
+
+
+    <div class="thumbnails">
+        {% for insta in image %}
+            <a href="{{ insta.image_url }}">
+                <img src="{{ insta.image_photo_url }}" />
+            </a>
+        {% endfor %}
+    </div>
+
+
+</body>
+</html>

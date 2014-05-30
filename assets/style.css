@@ -1,0 +1,153 @@
+@charset "UTF-8";
+/* Font Face */
+@font-face {
+  font-family: "TheSansBold";
+  src: url("fonts/TheSans_LP_700_Bold.eot?") format("eot"), url("fonts/TheSans_LP_700_Bold.woff") format("woff"); }
+
+@font-face {
+  font-family: "TheSansSemiBold";
+  src: url("fonts/TheSans_LP_600_SemiBold.eot?") format("eot"), url("fonts/TheSans_LP_600_SemiBold.woff") format("woff"); }
+
+@font-face {
+  font-family: "TheSansExtraLight";
+  src: url("fonts/TheSans_LP_200_ExtraLight.eot?") format("eot"), url("fonts/TheSans_LP_200_ExtraLight.woff") format("woff"); }
+
+/* Mixins */
+/* Vars */
+/*------------------------------------*\
+    $RESET
+\*------------------------------------*/
+/**
+ * A more considered reset; more of a restart...
+ * As per: csswizardry.com/2011/10/reset-restarted
+ */
+/**
+ * The usual...
+ */
+h1, h2, h3, h4, h5, h6,
+p, blockquote, pre,
+dl, dd, ol, ul,
+form, fieldset, legend,
+table, th, td, caption,
+hr {
+  margin: 0;
+  padding: 0; }
+
+/**
+ * Give a help cursor to elements that give extra info on `:hover`.
+ */
+abbr[title], dfn[title] {
+  cursor: help; }
+
+/**
+ * Remove underlines from potentially troublesome elements.
+ */
+u, ins {
+  text-decoration: none; }
+
+/**
+ * Apply faux underline via `border-bottom`.
+ */
+ins {
+  border-bottom: 1px solid; }
+
+/**
+ * So that `alt` text is visually offset if images don’t load.
+ */
+img {
+  font-style: italic; }
+
+/**
+ * Give form elements some cursor interactions...
+ */
+label,
+input,
+textarea,
+button,
+select,
+option {
+  cursor: pointer; }
+
+.text-input:active,
+.text-input:focus,
+textarea:active,
+textarea:focus {
+  cursor: text;
+  outline: none; }
+
+body, html {
+  background-color: #E9EEF3;
+  color: #3f5d87;
+  font-family: Helvetica, arial, sans-serif;
+  font-size: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden; }
+  body a, html a {
+    margin: 0;
+    padding: 0;
+    text-decoration: none; }
+  body img, html img {
+    max-width: 100%; }
+
+.main_image {
+  background-color: #b5c6dd;
+  border-left: 1em solid #3f5d87;
+  float: right;
+  height: 100%;
+  position: absolute;
+  right: 0;
+  width: 50%; }
+  .main_image .polaroid {
+    background-color: white;
+    bottom: 2em;
+    left: 0;
+    margin: 0 2em;
+    overflow: hidden;
+    padding: 0.5em;
+    position: absolute;
+    right: 0;
+    top: 2em; }
+    .main_image .polaroid img {
+      width: 100%; }
+    .main_image .polaroid .meta {
+      zoom: 1;
+      margin: 0.5em 0; }
+      .main_image .polaroid .meta:before, .main_image .polaroid .meta:after {
+        content: "";
+        display: table; }
+      .main_image .polaroid .meta:after {
+        clear: both; }
+      .main_image .polaroid .meta .user_avatar {
+        float: left;
+        margin-right: 1em;
+        width: 10%; }
+      .main_image .polaroid .meta .user_name {
+        font-weight: bold;
+        font-family: TheSansBold, sans-serif;
+        font-size: 1.3em;
+        letter-spacing: -1px; }
+      .main_image .polaroid .meta .created_datetime {
+        font-family: TheSansExtraLight, sans-serif; }
+    .main_image .polaroid .caption {
+      zoom: 1;
+      font-family: TheSansSemiBold, sans-serif;
+      margin: 1em 0; }
+      .main_image .polaroid .caption:before, .main_image .polaroid .caption:after {
+        content: "";
+        display: table; }
+      .main_image .polaroid .caption:after {
+        clear: both; }
+
+.thumbnails {
+  width: 55%; }
+  .thumbnails a {
+    padding-bottom: 25%;
+    height: 0;
+    width: 25%;
+    display: inline-block;
+    float: left;
+    margin: 0;
+    text-decoration: none; }
+    .thumbnails a img {
+      width: 100%; }

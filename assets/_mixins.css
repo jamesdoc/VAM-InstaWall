@@ -1,0 +1,6 @@
+/* Font Face */
+@font-face {
+  font-family: "TheSansBold";
+  src: url("../fonts/TheSans_LP_700_Bold.eot?") format("eot"), url("../fonts/TheSans_LP_700_Bold.woff") format("woff"); }
+
+/* Vars */
