@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 
-from model import InstaStore
+from api import GetImages
+from datetime import datetime, timedelta
 
-import api
 import importer
 import jinja2
 import os
@@ -13,23 +13,20 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 
-class MainHandler(webapp2.RequestHandler):
 
-    def get_latest_image(self):
-        q = InstaStore.all()
-        q.order('-created')
-        return q.run(limit=50)
+class MainHandler(webapp2.RequestHandler):
 
     def get(self):
         data = {}
-        data['image'] = self.get_latest_image()
-
+        dt = datetime.today() - timedelta(0.5)
+        data['image'] = GetImages().select_by_date(dt, '<=')
+        data['dt'] = dt
         template = JINJA_ENVIRONMENT.get_template('template/base.html')
         self.response.write(template.render(data))
 
 
 app = webapp2.WSGIApplication([
-    ('/api/v1/get_images.json', api.GetImages),
+    ('/api/v1/get_images.json', GetImages),
     ('/import/(.*)', importer.ImportHandler),
     ('/truncate', importer.TruncateData),
     ('/', MainHandler)

@@ -15,3 +15,9 @@ indexes:
   - name: id
   - name: created
     direction: desc
+
+- kind: InstaStore
+  properties:
+  - name: image_url
+  - name: created
+    direction: desc
