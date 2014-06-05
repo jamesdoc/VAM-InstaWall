@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-    <link rel="stylesheet" href="assets/style.css" />
-</head>
-<body data-lastfetch="{{ dt }}">
+{% extends "template/base.html" %}
+{% block title %}
+        Instragram wall
+{% endblock title %}
+{% block bodyattribute %} data-lastfetch="{{ dt }}" {% endblock bodyattribute %}
+{% block body %}
     <div class="banner">
         <h1>V&A Instagram feed</h1>
     </div>
@@ -40,7 +39,4 @@
             {% endif %}
         {% endfor %}
     </div>
-    <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script src="/assets/script.js"></script>
-</body>
-</html>
+{% endblock body %}
