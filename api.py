@@ -34,6 +34,7 @@ class GetImages(webapp2.RequestHandler):
 
         results = self.select_by_date(datestamp)
 
+        self.response.headers.add_header("Access-Control-Allow-Origin", "*")
         self.response.headers['Content-Type'] = 'application/json'
         self.response.write(json.dumps([t.to_dict() for t in results]))
 
