@@ -63,16 +63,10 @@ function update_lead_image(){
     // 1: If we are getting low then ping the api for new import
     if (items_in_image_array == 5) {
         api_select_new();
-        console.log('looking for new...');
 
     // 2: If we are getting really low then ping the api for something random
-    } else if (items_in_image_array == 3) {
+    } else if (items_in_image_array <= 3) {
         api_select_random();
-        console.log('Get rand...');
-
-    // 3: If there is nothing at all then run away
-    } else if (items_in_image_array == 0) {
-        return;
     }
 
     var image = image_array[0],
@@ -92,13 +86,18 @@ function update_lead_image(){
     $('.main_image').prepend(polaroid);
     $('.main_image .polaroid:last-child').fadeSlideLeft(400, function(e){$(this).remove();});
 
-    $('.thumbnails').prepend('<a href="" style="display: none"><img src="' + insert_image + '" /></a>');
-    $('.thumbnails a:first-child').animate({ width: 'show' });
-    //$('<a href=""><img src="' + insert_image + '" /></a>').appendTo('.thumbnails');
+    // Replace iamge in thumbnails
+    rand = getRandomInt(1,16);
+    $('.thumbnails a:nth-child('+rand+')').children('img').attr('src', insert_image);
 
     image_array.splice(0,1);
     array_index = array_index + 1;
 
+}
+
+
+function getRandomInt (min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 $.fn.fadeSlideLeft = function(speed,fn) {
@@ -109,4 +108,3 @@ $.fn.fadeSlideLeft = function(speed,fn) {
         $.isFunction(fn) && fn.call(this);
     });
 }
-
