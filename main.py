@@ -3,7 +3,7 @@
 from api import GetImages
 from datetime import datetime, timedelta
 
-import importer
+from importer import ImportHandler, TruncateData
 import jinja2
 import os
 import webapp2
@@ -17,17 +17,18 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 class MainHandler(webapp2.RequestHandler):
 
     def get(self):
-        data = {}
-        dt = datetime.today() - timedelta(1)
-        data['image'] = GetImages().select_by_date(dt, '<=')
-        data['dt'] = dt
+        one_day_ago = datetime.today() - timedelta(1)
+        data = {
+            'image':  GetImages().select_by_date(one_day_ago, '<='),
+            'dt': one_day_ago
+            }
         template = JINJA_ENVIRONMENT.get_template('template/base.html')
         self.response.write(template.render(data))
 
 
 app = webapp2.WSGIApplication([
     ('/api/v1/get_images.json', GetImages),
-    ('/import/(.*)', importer.ImportHandler),
-    ('/truncate', importer.TruncateData),
+    ('/import/(.*)', ImportHandler),
+    ('/truncate', TruncateData),
     ('/', MainHandler)
 ], debug=True)
