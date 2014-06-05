@@ -3,6 +3,7 @@ from google.appengine.ext import db
 from model import InstaStore
 import webapp2
 import json
+import random
 import datetime
 
 class GetImages(webapp2.RequestHandler):
@@ -19,20 +20,35 @@ class GetImages(webapp2.RequestHandler):
                                 int(dt.strftime('%S'))
         )
 
+    def select_random(self, count=10):
+        rand = random.randint(4500000000000000, 7500000000000000)
+        return db.GqlQuery("SELECT * FROM InstaStore WHERE __key__ > KEY('InstaStore', %i) LIMIT %i" % (rand, count))
+
 
     def get(self):
-        instaImages = InstaStore.all()
-        datestamp = self.request.get('dt', '')
-        self.response.headers['Content-Type'] = 'application/json'
+
         self.response.headers.add_header("Access-Control-Allow-Origin", "*")
-        try:
-            datestamp = datetime.datetime.strptime(datestamp, '%Y%m%d%H%M%S')
-            print datestamp
-        except ValueError:
-            self.response.write(json.dumps({'error': 'Unrecognised datetime, should be like '
-                                                     '/api/v1/get_images.json?dt=20140101000000 '
-                                                     'where dt=YYYYMMDDHHMMSS'}))
-            return
-        results = self.select_by_date(datestamp)
+        self.response.headers['Content-Type'] = 'application/json'
+
+        instaImages = InstaStore.all()
+
+        datestamp = self.request.get('dt', '')
+
+        if datestamp:
+            try:
+                datestamp = datetime.datetime.strptime(datestamp, '%Y%m%d%H%M%S')
+                print datestamp
+            except ValueError:
+                self.response.write(json.dumps({'error': 'Unrecognised datetime, should be like '
+                                                         '/api/v1/get_images.json?dt=20140101000000 '
+                                                         'where dt=YYYYMMDDHHMMSS'}))
+                return
+
+            results = self.select_by_date(datestamp)
+        else:
+            results = self.select_random(20)
+
+
         self.response.write(json.dumps([t.to_dict() for t in results]))
+
 
