@@ -1,7 +1,9 @@
 {% extends "template/base.html" %}
 {% block title %}
-        Instragram wall
+        Instagram wall
 {% endblock title %}
+
+{% block extraheader %}<meta http-equiv="refresh" content="3600000" />{% endblock extraheader %}
 {% block bodyattribute %} data-lastfetch="{{ dt }}" {% endblock bodyattribute %}
 {% block body %}
     <div class="banner">
