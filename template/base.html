@@ -16,7 +16,7 @@
 
         <div class="polaroid">
 
-            <img src="{{ first.image_photo_url }}" />
+            <img id="core_image" src="{{ first.image_photo_url }}" />
 
             <div class="meta">
                 <img class="user_avatar" src="{{ first.user_avatar_url }}" />
@@ -44,12 +44,15 @@
 
     <div class="thumbnails">
         {% for insta in image %}
+            {% if not loop.first %}
             <a href="{{ insta.image_url }}">
                 <img src="{{ insta.image_photo_url }}" />
             </a>
+            {% endif %}
         {% endfor %}
     </div>
 
-
+    <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="/assets/script.js"></script>
 </body>
 </html>

@@ -18,7 +18,7 @@ class MainHandler(webapp2.RequestHandler):
 
     def get(self):
         data = {}
-        dt = datetime.today() - timedelta(0.5)
+        dt = datetime.today() - timedelta(1)
         data['image'] = GetImages().select_by_date(dt, '<=')
         data['dt'] = dt
         template = JINJA_ENVIRONMENT.get_template('template/base.html')
