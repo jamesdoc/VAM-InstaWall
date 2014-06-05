@@ -96,7 +96,7 @@ body, html {
   color: white;
   height: 15%;
   position: absolute;
-  width: 50%; }
+  width: 60%; }
   .banner h1 {
     background-image: url(images/footer.svg);
     background-repeat: no-repeat;
@@ -114,7 +114,7 @@ body, html {
   height: 100%;
   position: absolute;
   right: 0;
-  width: 50%; }
+  width: 40%; }
   .main_image .polaroid {
     background-color: white;
     bottom: 2em;
@@ -157,7 +157,7 @@ body, html {
         clear: both; }
 
 .thumbnails {
-  width: 55%; }
+  width: 65%; }
   .thumbnails a {
     padding-bottom: 25%;
     height: 0;

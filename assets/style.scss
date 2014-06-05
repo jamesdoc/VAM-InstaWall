@@ -27,7 +27,7 @@ body, html {
     color: white;
     height: 15%;
     position: absolute;
-    width: 50%;
+    width: 60%;
 
     h1{
         background-image: url(images/footer.svg);
@@ -49,7 +49,7 @@ body, html {
     height: 100%;
     position: absolute;
     right: 0;
-    width: 50%;
+    width: 40%;
 
 
     .polaroid{
@@ -101,7 +101,7 @@ body, html {
 
 
 .thumbnails{
-    width: 55%;
+    width: 65%;
 
     a{
         @include fluid_square(25%);
