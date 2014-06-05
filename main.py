@@ -6,13 +6,13 @@ import webapp2
 from api import GetImages
 from datetime import datetime, timedelta
 from importer import ImportHandler, TruncateData
-from shop_wall.shopwall_handler import ShopWallHandler
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 
+from shop_wall.shopwall_handler import ShopWallHandler
 
 class MainHandler(webapp2.RequestHandler):
 

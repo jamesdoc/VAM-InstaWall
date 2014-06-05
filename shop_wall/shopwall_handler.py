@@ -10,7 +10,7 @@ class ShopWallHandler(webapp2.RequestHandler):
             'image':  [1,2,3,4],
             'dt': 3
             }
-        template = JINJA_ENVIRONMENT.get_template('template/base.html')
+        template = JINJA_ENVIRONMENT.get_template('template/shopwall.html')
         self.response.write(template.render(data))
 
 
