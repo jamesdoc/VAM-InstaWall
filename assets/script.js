@@ -3,6 +3,7 @@ var DateFormat={};!function(a){var b=["Sunday","Monday","Tuesday","Wednesday","T
 // http://127.0.0.1:8080/api/v1/get_images.json?dt=20140604110000
 
 var API_URL = "http://vam-imagewall.appspot.com/api/v1/get_images.json",
+    display_images_for = 15000,
     image_array = [],
     array_index = 0,
     update_lead;
@@ -16,7 +17,7 @@ $(document).ready(function(){
     var call_api = setInterval("api_select_new()", 500000);
 
     // 3: Set up a request to get the latest item from top of the pile
-    update_lead = setInterval("update_lead_image()", 15000);
+    update_lead = setInterval("update_lead_image()", display_images_for);
 
 });
 
@@ -78,15 +79,34 @@ function update_lead_image(){
         created_dt = new Date(image['created']);
         insert_image = $('#core_image').attr('src');
 
-    $('#core_image').attr('src', image['image_photo_url']);
-    $('.main_image .meta .user_avatar').attr('src', image['user_avatar_url']);
-    $('.main_image .meta .user_name').text(image['user_name']);
-    $('.main_image .meta .created_datetime').text('Posted ' + DateFormat.format.prettyDate(created_dt));
-    $('.main_image .caption').text(image['caption']);
+    var polaroid = '<div class="polaroid">\
+                <img id="core_image" src="' + image['image_photo_url'] + '" />\
+                <div class="meta">\
+                    <img class="user_avatar" src="' + image['user_avatar_url'] + '" />\
+                    <p class="user_name">' + image['user_name'] + '</p>\
+                    <p class="created_datetime">Posted ' + DateFormat.format.prettyDate(created_dt) + '</p>\
+                </div>\
+                <div class="caption">' + image['caption'] + '</div>\
+            </div>';
 
-    $('.thumbnails').prepend('<a href=""><img src="' + insert_image + '" /></a>');
+    $('.main_image').prepend(polaroid);
+    $('.main_image .polaroid:last-child').fadeSlideLeft(400, function(e){$(this).remove();});
+
+    $('.thumbnails').prepend('<a href="" style="display: none"><img src="' + insert_image + '" /></a>');
+    $('.thumbnails a:first-child').animate({ width: 'show' });
+    //$('<a href=""><img src="' + insert_image + '" /></a>').appendTo('.thumbnails');
 
     image_array.splice(0,1);
     array_index = array_index + 1;
 
 }
+
+$.fn.fadeSlideLeft = function(speed,fn) {
+    return $(this).animate({
+        'opacity' : 0,
+        'width' : '0px'
+    },speed || 400,function() {
+        $.isFunction(fn) && fn.call(this);
+    });
+}
+
