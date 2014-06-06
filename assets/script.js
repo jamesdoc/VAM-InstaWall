@@ -45,7 +45,7 @@ function api_select_new() {
     api_call(url);
 
     // 3: Update data-lastfetch with now.
-    $('body').data('lastfetch',new Date())
+    $('body').data('lastfetch', new Date())
 
 }
 
@@ -78,7 +78,7 @@ function update_lead_image(){
                 <div class="meta">\
                     <img class="user_avatar" src="' + image['user_avatar_url'] + '" />\
                     <p class="user_name">' + image['user_name'] + '</p>\
-                    <p class="created_datetime">Posted ' + DateFormat.format.prettyDate(created_dt) + '</p>\
+                    <p class="created_datetime">Posted ' + DateFormat.format.date(image['created'], 'ddd dd MMM') + '</p>\
                 </div>\
                 <div class="caption">' + image['caption'] + '</div>\
             </div>';
