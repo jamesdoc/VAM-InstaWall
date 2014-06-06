@@ -4,6 +4,28 @@
     shop
 {% endblock title %}
 {% block body %}
-  hi world
+    <div class="shopbanner">
+        <h1>V&A Shop feed</h1>
+    </div>
+{% for first in image|batch(1)|first %}
+    <div class="main_image">
+        <div class="polaroid">
+            <img id="core_image" src="{{ first.main_image }}" />
+            <div class="caption">
+                {{ first.description }}
+            </div>
+        </div>
+    </div>
+{% endfor %}
+
+<div class="thumbnails">
+        {% for img in image %}
+            {% if not loop.first %}
+            <a href="{{ img.main_image }}">
+                <img src="{{ img.main_image }}" />
+            </a>
+            {% endif %}
+        {% endfor %}
+    </div>
 {% endblock body %}
 
