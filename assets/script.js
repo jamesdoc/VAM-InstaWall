@@ -70,7 +70,7 @@ function update_lead_image(){
     }
 
     var image = image_array[0],
-        created_dt = new Date(image['created']);
+        created_dt = new Date(image['created']),
         insert_image = $('#core_image').attr('src');
 
     var polaroid = '<div class="polaroid">\

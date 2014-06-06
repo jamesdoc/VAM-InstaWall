@@ -4,10 +4,10 @@
 {% endblock title %}
 
 {% block extraheader %}<meta http-equiv="refresh" content="3600000" />{% endblock extraheader %}
-{% block bodyattribute %} data-lastfetch="{{ dt }}" {% endblock bodyattribute %}
+{% block bodyattribute %}data-lastfetch="{{ dt.strftime('%s') }}"{% endblock bodyattribute %}
 {% block body %}
     <div class="banner">
-        <h1>V&A Instagram feed</h1>
+        <h1>V&amp;A Instagram feed</h1>
     </div>
 {% for first in image|batch(1)|first %}
     <div class="main_image">
