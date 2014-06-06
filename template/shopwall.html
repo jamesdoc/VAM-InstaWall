@@ -21,7 +21,7 @@
 <div class="thumbnails">
         {% for img in image %}
             {% if not loop.first %}
-            <a href="{{ img.main_image }}">
+            <a href="{{ img.url }}">
                 <img src="{{ img.main_image }}" />
             </a>
             {% endif %}
