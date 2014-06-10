@@ -1,0 +1,22 @@
+{% extends "template/base.html" %}
+{% block title %}
+        What's On
+{% endblock title %}
+
+{% block extraheader %}<meta http-equiv="refresh" content="3600000" />{% endblock extraheader %}
+{% block bodyattribute %}{% endblock bodyattribute %}
+{% block body %}
+
+    <div class="events">
+        {% for datetime, event in events|dictsort(false, "key") %}
+            <em>{{ datetime }}</em><br />
+            <img src="http://www.vam.ac.uk/whatson/media/{{ event.image|replace('.','_jpg_130x86_crop_q85.') }}" /><br/>
+            {{ event_types[event.event_type] }}: {{ event.name }}<hr />
+        {% endfor %}
+    </div>
+
+    <style>
+        body{overflow: scroll}
+    </style>
+
+{% endblock body %}

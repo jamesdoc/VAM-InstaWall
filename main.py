@@ -5,7 +5,7 @@ import os
 import webapp2
 from api import GetImages
 from datetime import datetime, timedelta
-from importer import ImportHandler, TruncateData
+from importer import ImportHandler
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)),
@@ -13,6 +13,7 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     autoescape=True)
 
 from shop_wall.shopwall_handler import ShopWallHandler
+from whats_on.whats_on_handler import WhatsOnHandler
 
 class MainHandler(webapp2.RequestHandler):
 
@@ -29,7 +30,7 @@ class MainHandler(webapp2.RequestHandler):
 app = webapp2.WSGIApplication([
     ('/api/v1/get_images.json', GetImages),
     ('/import/(.*)', ImportHandler),
-    ('/truncate', TruncateData),
     ('/shop', ShopWallHandler),
+    ('/whatson', WhatsOnHandler),
     ('/', MainHandler)
 ], debug=True)
